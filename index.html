@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> </title>
+<title>약속 장소</title>
 
 <style>
 *{
@@ -62,7 +62,7 @@ body{
     <img src="5gate.png" alt="약속장소" class="location-image">
 
     <button class="route-btn" onclick="openKakaoMap()">
-        <span>📍</span> 카카오맵으로 길찾기
+        <span>🚌</span> 카카오맵 대중교통 길찾기
     </button>
 
 </div>
@@ -70,13 +70,18 @@ body{
 <script>
 function openKakaoMap() {
 
-    // 카카오맵 앱 실행
+    // 목적지
+    const lat = "37.560844";
+    const lng = "126.983348";
+    const placeName = "서울중구퇴계로43";
+
+    // 카카오맵 앱 - 대중교통 길찾기
     const appUrl =
-        "kakaomap://route?ep=37.560844,126.983348&by=CAR";
+        `kakaomap://route?ep=${lat},${lng}&by=PUBLICTRANSIT`;
 
     // 웹 대체 URL
     const webUrl =
-        "https://map.kakao.com/link/to/서울중구퇴계로43,37.560844,126.983348";
+        `https://map.kakao.com/link/to/${placeName},${lat},${lng}`;
 
     const ua = navigator.userAgent.toLowerCase();
 
