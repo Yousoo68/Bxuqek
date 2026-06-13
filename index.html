@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> </title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#f8f9fb;
+    font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',
+                'Noto Sans KR',sans-serif;
+    padding:24px 16px 40px;
+}
+
+.location-wrap{
+    max-width:500px;
+    margin:0 auto;
+}
+
+.location-image{
+    width:100%;
+    display:block;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,.12);
+}
+
+.route-btn{
+    width:100%;
+    margin-top:18px;
+    border:none;
+    border-radius:16px;
+    background:linear-gradient(135deg,#FEE500,#FFD400);
+    color:#191919;
+    font-size:17px;
+    font-weight:700;
+    padding:16px;
+    cursor:pointer;
+    box-shadow:0 8px 20px rgba(254,229,0,.35);
+    transition:.2s;
+}
+
+.route-btn:active{
+    transform:scale(.98);
+}
+
+.route-btn span{
+    margin-right:6px;
+}
+</style>
+</head>
+<body>
+
+<div class="location-wrap">
+
+    <img src="5gate.png" alt="약속장소" class="location-image">
+
+    <button class="route-btn" onclick="openKakaoMap()">
+        <span>📍</span> 카카오맵으로 길찾기
+    </button>
+
+</div>
+
+<script>
+function openKakaoMap() {
+
+    // 카카오맵 앱 실행
+    const appUrl =
+        "kakaomap://route?ep=37.560844,126.983348&by=CAR";
+
+    // 웹 대체 URL
+    const webUrl =
+        "https://map.kakao.com/link/to/서울중구퇴계로43,37.560844,126.983348";
+
+    const ua = navigator.userAgent.toLowerCase();
+
+    if (/iphone|ipad|ipod|android/.test(ua)) {
+
+        const start = Date.now();
+
+        window.location.href = appUrl;
+
+        setTimeout(function () {
+            if (Date.now() - start < 2500) {
+                window.location.href = webUrl;
+            }
+        }, 1500);
+
+    } else {
+        window.open(webUrl, "_blank");
+    }
+}
+</script>
+
+</body>
+</html>
