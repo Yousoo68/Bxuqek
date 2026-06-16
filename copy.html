@@ -3,50 +3,103 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>고정 복사 패널</title>
+<title>고정 문장 복사 패널</title>
 
 <style>
 body{
-    font-family: Arial, sans-serif;
-    max-width: 900px;
-    margin: 30px auto;
-    padding: 20px;
+    font-family:Arial,sans-serif;
+    max-width:1200px;
+    margin:30px auto;
+    padding:20px;
+    background:#f5f5f5;
+}
+
+.container{
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
 }
 
 .panel{
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 20px;
+    flex:1;
+    min-width:350px;
+    background:#fff;
+    padding:15px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
 }
 
-.content{
-    background: #f5f5f5;
-    padding: 15px;
-    border-radius: 8px;
-    white-space: pre-wrap;
-    margin-bottom: 10px;
+.preview{
+    border:1px solid #ddd;
+    background:#fafafa;
+    padding:12px;
+    border-radius:6px;
+    min-height:120px;
+    white-space:pre-wrap;
+    line-height:1.6;
 }
 
 button{
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    background: #007bff;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
+    width:100%;
+    margin-top:10px;
+    padding:12px;
+    font-size:16px;
+    font-weight:bold;
+    border:none;
+    border-radius:6px;
+    background:#007bff;
+    color:white;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#0056b3;
+}
+
+.message{
+    text-align:center;
+    margin-top:8px;
+    color:green;
+    font-weight:bold;
 }
 </style>
 </head>
 <body>
 
-<h1>📋 고정 문구 복사</h1>
+<h1>📋 고정 문장 복사 패널</h1>
 
-<div class="panel">
-    <h3>프롬포트</h3>
-    <div class="content" id="content1">
+<div class="container">
+
+    <div class="panel">
+        <h2>프롬포트</h2>
+
+        <div id="preview1" class="preview"></div>
+
+        <button onclick="copyText(fullText1,'msg1')">
+            전체 문장 복사
+        </button>
+
+        <div id="msg1" class="message"></div>
+    </div>
+
+    <div class="panel">
+        <h2>명령문</h2>
+
+        <div id="preview2" class="preview"></div>
+
+        <button onclick="copyText(fullText2,'msg2')">
+            전체 문장 복사
+        </button>
+
+        <div id="msg2" class="message"></div>
+    </div>
+
+</div>
+
+<script>
+
+// 패널1 전체 문장
+const fullText1 = `
 --------9주차
 
 1. 핵심 사항
@@ -234,27 +287,47 @@ button{
 요약
 
 오늘의 강의에서는 90년대 중반부터 현재까지 한류의 발전 과정을 4단계로 구분하여 살펴보았습니다. 1기(1995-2002년)에는 한국 드라마와 음악이 중앙 아시아와 일본을 중심으로 관심을 받기 시작했고, 2기(2003-2009년)에는 일본과 중화권을 중심으로 한류가 본격적으로 수출되면서 1세대 아이돌 시장이 전성기를 맞았습니다. 3기(2010-2017년)에는 스마트폰과 뉴미디어의 확산으로 젊은 세대를 중심으로 한 온라인 팬덤 활동이 활발해졌고, 강남스타일, 방 탄소년단 등이 전 세계적인 열풍을 일으켰습니다. 마지막 4기(2018년-현재)에는 한국 콘텐츠가 글로벌 OTT 플랫폼에 진출하며 더욱 확산되고 있습니다. 이러한 한류의 발전을 위해서는 기술과 산업의 다각화, 팬덤 지원 등이 필요할 것으로 보입니다. 또한 역사적 고증과 문화적 정체성 유지에 대한 고민도 필요 한 시점이라고 할 수 있겠습니다.
-    </div>
-    <button onclick="copyContent('content1')">복사하기</button>
-</div>
+    `;
 
-<div class="panel">
-    <h3>명령문</h3>
-    <div class="content" id="content2">
-[학과명]과 한국문화의 정체성을 융합적으로 생각해 짧고 간결하게 4문단으로 작성해줘.
-    </div>
-    <button onclick="copyContent('content2')">복사하기</button>
-</div>
+// 패널2 전체 문장
+const fullText2 = `[학과명]과 한국문화의 정체성을 융합적으로 생각해 짧고 간결하게 4문단으로 작성해줘.`;
 
-<script>
-async function copyContent(id){
-    const text = document.getElementById(id).innerText;
+function makePreview(text){
+
+    const paragraphs = text.trim().split(/\n\s*\n/);
+
+    if(paragraphs.length <= 3){
+        return text.trim();
+    }
+
+    return paragraphs.slice(0,3).join("\n\n")
+           + "\n\n...(이하 생략)";
+}
+
+document.getElementById("preview1").textContent =
+    makePreview(fullText1);
+
+document.getElementById("preview2").textContent =
+    makePreview(fullText2);
+
+async function copyText(text,msgId){
 
     try{
+
         await navigator.clipboard.writeText(text);
-        alert("복사되었습니다.");
-    }catch{
+
+        const msg=document.getElementById(msgId);
+
+        msg.textContent="✅ 전체 복사 완료!";
+
+        setTimeout(()=>{
+            msg.textContent="";
+        },2000);
+
+    }catch(err){
+
         alert("복사 실패");
+
     }
 }
 </script>
